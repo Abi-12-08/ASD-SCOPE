@@ -136,6 +136,13 @@ else:
         input_text="#172033",
     )
 
+# Button colors are explicitly paired so labels remain readable in every theme.
+button_bg = theme["surface"]
+button_text = theme["text"]
+button_border = theme["border"]
+primary_button_bg = theme["accent"]
+primary_button_text = "#FFFFFF" if (st.session_state.contrast or not st.session_state.dark) else "#111827"
+
 font_px = {
     "Standard": "16px",
     "Large": "19px",
@@ -263,10 +270,54 @@ h1,h2,h3,h4,p,li,label,[data-testid="stMarkdownContainer"] {{
     margin:14px 0;
 }}
 .notice strong,.notice p {{ color:{theme["notice_text"]} !important; }}
-.stButton > button,.stFormSubmitButton > button {{
+/* Consistent, accessible button styling: secondary buttons use theme surfaces;
+   primary actions use the accent with a deliberately contrasting label. */
+.stButton > button,
+.stFormSubmitButton > button,
+[data-testid="stBaseButton-secondary"] {{
+    background:{button_bg} !important;
+    color:{button_text} !important;
+    border:1px solid {button_border} !important;
     border-radius:9px;
     min-height:42px;
     font-weight:600;
+}}
+.stButton > button p,
+.stFormSubmitButton > button p,
+[data-testid="stBaseButton-secondary"] p {{
+    color:{button_text} !important;
+}}
+.stButton > button:hover,
+.stFormSubmitButton > button:hover,
+[data-testid="stBaseButton-secondary"]:hover {{
+    background:{theme["input"]} !important;
+    color:{button_text} !important;
+    border-color:{theme["accent"]} !important;
+}}
+.stButton > button[kind="primary"],
+.stFormSubmitButton > button[kind="primary"],
+[data-testid="stBaseButton-primary"] {{
+    background:{primary_button_bg} !important;
+    color:{primary_button_text} !important;
+    border:1px solid {primary_button_bg} !important;
+    border-radius:9px;
+    min-height:42px;
+    font-weight:700;
+}}
+.stButton > button[kind="primary"] p,
+.stFormSubmitButton > button[kind="primary"] p,
+[data-testid="stBaseButton-primary"] p {{
+    color:{primary_button_text} !important;
+}}
+.stButton > button[kind="primary"]:hover,
+.stFormSubmitButton > button[kind="primary"]:hover,
+[data-testid="stBaseButton-primary"]:hover {{
+    filter:brightness(0.94);
+}}
+.stButton > button:focus-visible,
+.stFormSubmitButton > button:focus-visible {{
+    outline:3px solid {theme["accent"]} !important;
+    outline-offset:2px !important;
 }}
 [data-testid="stApp"] input,[data-testid="stApp"] textarea,[data-baseweb="select"] > div {{
     background:{theme["input"]} !important;
